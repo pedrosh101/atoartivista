@@ -12,7 +12,7 @@ export default function Home() {
       <Slider />
       <div className="bg-clr3 text-white py-20 text-center">
         <h1 className="text-5xl font-bold mb-16 text-center">Nosso trabalho</h1>
-        <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-12  px-6">
+        <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-24 px-6">
           <div className="flex flex-col justify-center items-center gap-4 max-w-md">
             <Image
               src={nossoTrabalho1}
