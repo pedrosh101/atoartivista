@@ -12,6 +12,7 @@ import {
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
 import { Menu, X } from "lucide-react";
+import Link from "next/link";
 
 export default function Header() {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -19,9 +20,11 @@ export default function Header() {
   return (
     <header className="bg-clr2 p-4 px-6">
       <div className="flex justify-between items-center">
+        <Link href="/">
+        
         <Image src={logo} alt="Logo" width={120} priority />
+        </Link>
 
-        {/* Botão hamburguer mobile */}
         <button
           className="md:hidden text-clr1"
           onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
@@ -62,7 +65,7 @@ export default function Header() {
             </NavigationMenuItem>
 
             <NavigationMenuItem>
-              <NavigationMenuLink href="#" className="text-md">Acervo</NavigationMenuLink>
+              <NavigationMenuLink href="/acervo" className="text-md">Acervo</NavigationMenuLink>
             </NavigationMenuItem>
 
             <NavigationMenuItem>
