@@ -13,14 +13,14 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import Header from "@/components/header";
+
 
 export default function AcervoPage() {
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      <Header />
+
       <div className="flex min-h-screen bg-clr1">
         {/* Lado esquerdo: galeria */}
         <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
