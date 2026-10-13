@@ -2,18 +2,22 @@
 
 import Image from 'next/image';
 import React, { useState } from 'react'
+import { useI18n } from '@/i18n/client'
 
-// Configure aqui o destino e o rótulo de cada fatia.
-// Por enquanto todas apontam para /acervo — troque o "href" quando tiver as páginas prontas.
-const SLICES: Record<string, { href: string; label: string }> = {
-  'Fatia-4': { href: '/acervo', label: 'Residências Artísticas' },
-  'Fatia-3': { href: '/projeto-vunje', label: 'Projeto Vunje' },
-  'Fatia-2': { href: '/acervo', label: 'Ocupação Casa Azul' },
-  'Fatia-1': { href: '/acervo', label: 'Acervo' },
-}
+// Configure aqui o destino de cada fatia (o rótulo vem do dicionário: home.slices).
+// Por enquanto várias apontam para /acervo — troque o "href" quando tiver as páginas prontas.
+const SLICES = {
+  'Fatia-4': { href: '/acervo', label: 'residencies' },
+  'Fatia-3': { href: '/projeto-vunje', label: 'vunje' },
+  'Fatia-2': { href: '/acervo', label: 'casaAzul' },
+  'Fatia-1': { href: '/acervo', label: 'collection' },
+} as const
+
+type SliceId = keyof typeof SLICES
 
 export default function Front() {
-  const [hovered, setHovered] = useState<string | null>(null)
+  const { t } = useI18n()
+  const [hovered, setHovered] = useState<SliceId | null>(null)
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 })
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
@@ -28,7 +32,7 @@ export default function Front() {
       <svg
         viewBox="0 0 1000 800"
         xmlns="http://www.w3.org/2000/svg"
-        className="2xl:w-[min(90vw,600px)] w-[min(90vw,400px)] h-auto"
+        className="2xl:w-[min(90vw,760px)] w-[min(90vw,560px)] h-auto"
         aria-label="Ilustração interativa"
       >
         <a
@@ -85,16 +89,16 @@ export default function Front() {
         alt="Logo"
         width={180}
         height={180}
-        className="pointer-events-none absolute left-1/2 top-1/2 z-10 h-auto -translate-x-1/2 -translate-y-1/2 2xl:w-[180px] w-[100px]"
+        className="pointer-events-none absolute left-1/2 top-1/2 z-10 h-auto -translate-x-1/2 -translate-y-1/2 2xl:w-[210px] w-[130px]"
       />
 
       {/* Cursor customizado: mostra o nome da página ao passar por cima de uma fatia */}
       {hovered && (
         <div
-          className="pointer-events-none fixed z-50 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-md px-3 py-1 text-sm text-white"
+          className="pointer-events-none fixed z-50 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-md px-3 py-1 text-sm text-clr3"
           style={{ left: cursorPos.x, top: cursorPos.y }}
         >
-          {SLICES[hovered].label}
+          {t.home.slices[SLICES[hovered].label]}
         </div>
       )}
     </main>

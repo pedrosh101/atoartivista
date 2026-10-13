@@ -1,40 +1,42 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "swiper/css";
-@import "swiper/css/effect-fade";
 
-@custom-variant dark (&:is(.dark *));
+/* ==========================================================================
+   PALETA DO SITE  —  único lugar para trocar as cores
+   --------------------------------------------------------------------------
+   Todo o site usa as classes do Tailwind geradas a partir destas variáveis
+   (bg-clr1, text-clr2, border-clr4/15, fill-clr5 ...). Alterou aqui, mudou
+   em todas as páginas.
+   ========================================================================== */
+:root {
+  /* bege — fundos, cor predominante */
+  --clr1: #fff7e8;
+  /* verde escuro — cor principal (navbar, hero, rodapé) */
+  --clr2: #26351e;
+  /* branco */
+  --clr3: #ffffff;
+  /* marrom — textos secundários e linhas */
+  --clr4: #483424;
+  /* amarelo — detalhes e CTAs */
+  --clr5: #f5b756;
+}
 
 @theme inline {
+  --color-clr1: var(--clr1);
+  --color-clr2: var(--clr2);
+  --color-clr3: var(--clr3);
+  --color-clr4: var(--clr4);
+  --color-clr5: var(--clr5);
+
+  --font-urbanist: var(--font-urbanist-src), "Urbanist", sans-serif;
+  --font-open-sans: var(--font-open-sans-src), "Open Sans", sans-serif;
+
+  /* largura máxima de conteúdo, compartilhada por todas as páginas (max-w-page) */
+  --container-page: 84rem;
+
+  /* tokens semânticos (shadcn) */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-urbanist: "Urbanist", sans-serif;
-  --font-open-sans: "Open Sans", sans-serif;
-  /*bege para fundos, cor predominante*/
-  --color-clr1: #fff7e8;
-  /*verde forte, principal*/
-  --color-clr2: #26351e;
-  /*branco*/
-  --color-clr3: #fff;
-  /*marrom*/
-  --color-clr4: #483424;
-  /*amarelo para detalhes e ctas*/
-  --color-clr5: #F5B756;
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -57,73 +59,27 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+/* tokens semânticos derivados da paleta acima */
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --background: var(--clr1);
+  --foreground: var(--clr2);
+  --card: var(--clr3);
+  --card-foreground: var(--clr2);
+  --popover: var(--clr1);
+  --popover-foreground: var(--clr2);
+  --primary: var(--clr2);
+  --primary-foreground: var(--clr1);
+  --secondary: color-mix(in srgb, var(--clr4) 8%, var(--clr1));
+  --secondary-foreground: var(--clr2);
+  --muted: color-mix(in srgb, var(--clr4) 8%, var(--clr1));
+  --muted-foreground: color-mix(in srgb, var(--clr4) 70%, var(--clr1));
+  --accent: var(--clr5);
+  --accent-foreground: var(--clr2);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
-
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --border: color-mix(in srgb, var(--clr4) 15%, transparent);
+  --input: color-mix(in srgb, var(--clr4) 15%, transparent);
+  --ring: var(--clr5);
 }
 
 @layer base {
@@ -132,5 +88,8 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  html {
+    scroll-behavior: smooth;
   }
 }

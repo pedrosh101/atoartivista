@@ -1,83 +1,98 @@
-// app/acervo/page.tsx
-"use client";
-
-import { useState } from "react";
-import { artists } from "../data/artists";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+import { Container } from "@/components/container";
+import ArtistsSheet from "@/components/artistsSheet";
+import { artistsSorted } from "@/app/data/artists";
+import { fmt } from "@/i18n/config";
+import { getI18n } from "@/i18n/server";
 
-
-export default function AcervoPage() {
-  const [open, setOpen] = useState(false);
+export default async function AcervoPage() {
+  const { t } = await getI18n();
+  const c = t.collection;
 
   return (
     <>
+      <Navbar />
 
-      <div className="flex min-h-screen bg-clr1">
-        {/* Lado esquerdo: galeria */}
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-          {artists.map((artist) => (
-            <Link
-              href={`/artists/${artist.id}`}
-              key={artist.id}
-              className="relative rounded-xl overflow-hidden shadow-lg group"
-            >
-              <Image
-                src={artist.bg}
-                alt={artist.title}
-                width={600}
-                height={400}
-                className="object-cover w-full h-64 transition-transform duration-300 group-hover:scale-105"
+      <main className="bg-clr1 pt-32 font-open-sans text-clr2 md:pt-40">
+        {/* CABEÇALHO */}
+        <Container>
+          <header className="flex flex-col gap-8 border-b border-clr4/15 pb-10 md:flex-row md:items-end md:justify-between md:pb-14">
+            <div className="max-w-2xl">
+              <p className="mb-6 font-urbanist text-sm tracking-[0.25em] text-clr4/70 uppercase">
+                {c.eyebrow}
+              </p>
+              <h1 className="mb-6 font-urbanist text-5xl leading-[1.05] md:text-7xl">
+                {c.title}
+              </h1>
+              <p className="text-base leading-relaxed text-clr4">{c.intro}</p>
+            </div>
+
+            <div className="flex flex-col items-start gap-3 md:items-end">
+              <p className="font-urbanist text-sm text-clr4/70">
+                {fmt(
+                  artistsSorted.length === 1 ? c.artistsOne : c.artistsMany,
+                  {
+                    n: artistsSorted.length,
+                  },
+                )}
+              </p>
+              <ArtistsSheet
+                artists={artistsSorted.map((a) => ({
+                  slug: a.slug,
+                  name: a.name,
+                  portrait: a.portrait.src,
+                  works: a.works.length,
+                }))}
               />
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <span className="text-white text-lg font-semibold">
-                  {artist.title}
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
+            </div>
+          </header>
+        </Container>
 
-        {/* Botão + Sheet */}
-        <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger asChild>
-            <Button
-              className="fixed bottom-6 right-6 z-50 bg-clr2 text-clr1 hover:opacity-80"
-              onClick={() => setOpen(true)}
-            >
-              Ver todos os artistas
-            </Button>
-          </SheetTrigger>
-          <SheetContent
-            side="right"
-            className="w-64 bg-white p-6 shadow-xl overflow-y-auto"
-          >
-            <SheetHeader>
-              <SheetTitle>Artistas</SheetTitle>
-            </SheetHeader>
-            <ul className="mt-4 space-y-3">
-              {artists.map((artist) => (
-                <li key={artist.id}>
+        {/* GRADE (masonry: respeita a proporção de cada obra) */}
+        <Container className="py-12 md:py-16">
+          <ul className="columns-1 gap-x-6 sm:columns-2 lg:columns-3">
+            {artistsSorted.map((artist) => {
+              const cover = artist.works[0].image;
+              return (
+                <li key={artist.slug} className="mb-12 break-inside-avoid">
                   <Link
-                    href={`/artists/${artist.id}`}
-                    className="block text-lg font-medium text-gray-800 hover:underline"
+                    href={`/artists/${artist.slug}`}
+                    className="group block"
                   >
-                    {artist.title}
+                    <div className="overflow-hidden bg-clr4/5">
+                      <Image
+                        src={cover.src}
+                        alt={artist.name}
+                        width={cover.width}
+                        height={cover.height}
+                        sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw"
+                        className="h-72 w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+
+                    <div className="mt-4 flex items-baseline justify-between gap-4 border-b border-clr4/15 pb-3 transition-colors group-hover:border-clr2">
+                      <h2 className="font-urbanist text-xl">{artist.name}</h2>
+                      <span className="shrink-0 font-urbanist text-sm text-clr4/70">
+                        {fmt(
+                          artist.works.length === 1 ? c.worksOne : c.worksMany,
+                          {
+                            n: artist.works.length,
+                          },
+                        )}
+                      </span>
+                    </div>
                   </Link>
                 </li>
-              ))}
-            </ul>
-          </SheetContent>
-        </Sheet>
-      </div>
+              );
+            })}
+          </ul>
+        </Container>
+      </main>
+
+      <Footer />
     </>
   );
 }
